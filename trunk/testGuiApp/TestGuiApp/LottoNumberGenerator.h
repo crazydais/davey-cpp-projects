@@ -3,29 +3,36 @@
 
 //  include required headers for the class
 #include <string>       //  (since the constructor takes a string arg)
+#include <QtCore>
+
+
 using namespace std;    //  include this or use std:: in front of string, ie: std::string
 
-class LottoNumberGenerator
+class LottoNumberGenerator : public QThread
 {
-public:
-    //  Constrctor declarations
-    LottoNumberGenerator();
+    public:
+        //  Constrctor declarations
+
+        LottoNumberGenerator();
+        LottoNumberGenerator(int *numArray);
 
 
-    //  Destructor declaration
-    ~LottoNumberGenerator();
+        //  Destructor declaration
+        ~LottoNumberGenerator();
 
-    //  setter/getters declarations
+        //  setter/getters declarations
 
-    //  Function declarations
-    int generateNumber(int);
+        //  Function declarations
+        int generateNumber(int);
 
-protected:
+        void run();     //  override QThread run() function...
+
+    protected:
 
 
-private:
+    private:
 
-
+        int *tempArray;
 };
 
 

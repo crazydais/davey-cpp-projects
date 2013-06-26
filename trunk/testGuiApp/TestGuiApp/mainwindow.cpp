@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     */
 
     //  Call 'on_pushButton_generate_clicked()' to generate numbers on startup...
-    MainWindow::on_pushButton_generate_clicked();
+   // MainWindow::on_pushButton_generate_clicked();
 
 
 }
@@ -34,36 +34,22 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_generate_clicked()
 {
-    LottoNumberGenerator *numberGen = new LottoNumberGenerator;
-    stringstream ss;
-    int i = 0;
-    int numArray[6] = {0, 0, 0, 0, 0, 0};
 
-    srand((unsigned)time(NULL));
+    int numArray[6];
 
-    //  To prevent duplicate numbers.  If a number already exsits in the array, get another number...
-    for(int j = 0; j < 6; j++)
+    for(int i = 0; i < 6; i++)
     {
-        i = numberGen->generateNumber(rand()%1000);
-
-        if(j > 0)
-        {
-            for(int k = 0; k < j; k++)
-            {
-                //cout << k << endl;
-
-                if(i == numArray[k])
-                {
-                    cout << "caught duplicate" << endl;
-                    i = numberGen->generateNumber(rand()%1000);
-                    k = 0;
-                }
-            }
-        }
-
-        numArray[j] = i;
-        //  cout << numArray[j] << endl;
+        numArray[i] = 0;
     }
+
+
+    LottoNumberGenerator *numberGen = new LottoNumberGenerator((int*) numArray);
+    stringstream ss;
+
+    numberGen->start();
+
+    //  This sleep will allow enough time for the thread to run so the GUI thread can update the label values...
+    sleep(1);
 
     cout << " ---- " << endl;
 
@@ -96,4 +82,7 @@ void MainWindow::on_pushButton_generate_clicked()
     ui->label_num_06->setText(QString::fromStdString(ss.str()));
     ss.str(std::string());
     ss.clear();
+
 }
+
+
