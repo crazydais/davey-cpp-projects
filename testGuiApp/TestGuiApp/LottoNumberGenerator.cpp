@@ -3,12 +3,17 @@
 #include <iostream>     //  cout
 #include <cstdlib>      //  rand()
 #include <ctime>        //  time()
-
+#include <sstream>      //  ss.str(), ss.clear()
 
 
 LottoNumberGenerator::LottoNumberGenerator()
 {
     //  nothing     -   default constructor
+}
+
+LottoNumberGenerator::LottoNumberGenerator(int *numArray)
+{
+    tempArray = numArray;
 }
 
 LottoNumberGenerator::~LottoNumberGenerator()
@@ -40,4 +45,38 @@ int LottoNumberGenerator::generateNumber(int seed)
             }
 
     return x;
+}
+
+void LottoNumberGenerator::run()
+{
+
+    cout << "Thread running..." << endl;
+
+    int i = 0;
+
+    srand((unsigned)time(NULL));
+
+    //  To prevent duplicate numbers.  If a number already exsits in the array, get another number...
+    for(int j = 0; j < 6; j++)
+    {
+        i = this->generateNumber(rand()%1000);
+
+        if(j > 0)
+        {
+            for(int k = 0; k < j; k++)
+            {
+                //cout << k << endl;
+
+                if(i == tempArray[k])
+                {
+                    cout << "caught duplicate" << endl;
+                    i = this->generateNumber(rand()%1000);
+                    k = 0;
+                }
+            }
+        }
+
+        tempArray[j] = i;
+        //  cout << tempArray[j] << endl;
+    }
 }
